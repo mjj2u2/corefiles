@@ -1,0 +1,55 @@
+from tkinter import *
+from tkinter.ttk import *
+
+
+def select():
+    curItems = treev.selection()
+    print("\n".join([str(treev.item(i)['values']) for i in curItems]))
+
+# Creating tkinter window
+window = Tk()
+window.resizable(width=True, height=True)
+
+# Using treeview widget
+treev = Treeview(window)  # , selectmode='browse'
+# Calling pack method w.r.to treeview
+treev.pack(side='right')
+
+but = Button(text='Press', command=select).pack()
+
+# Constructing vertical scrollbarwith treeview
+verscrlbar = Scrollbar(window, orient="vertical", command=treev.yview)
+
+# Calling pack method w.r.to vertical scrollbar
+verscrlbar.pack(side='right', fill='x')
+
+# Configuring treeview
+treev.configure(xscrollcommand=verscrlbar.set)
+
+# Defining number of columns
+treev["columns"] = ("1",)
+
+# Defining heading
+treev['show'] = 'headings'
+
+# Assigning the width and anchor to the respective columns
+treev.column("1", width=90, anchor='c')
+
+# Assigning the heading names to the respective columns
+treev.heading("1", text="Name")
+
+# Inserting the items and their features to the columns built
+treev.insert("", 'end', text="L1", values=("Bob",))
+treev.insert("", 'end', text="L2", values=("Sam",))
+treev.insert("", 'end', text="L3", values=("Frank",))
+treev.insert("", 'end', text="L4", values=("Bill",))
+treev.insert("", 'end', text="L5", values=("Susan",))
+treev.insert("", 'end', text="L6", values=("David",))
+treev.insert("", 'end', text="L7", values=("Ella",))
+treev.insert("", 'end', text="L8", values=("Filbert",))
+treev.insert("", 'end', text="L10", values=("Rob",))
+treev.insert("", 'end', text="L11", values=("Mike",))
+treev.insert("", 'end', text="L12", values=("John",))
+treev.insert("", 'end', text="L13", values=("Ann",))
+
+window.mainloop()
