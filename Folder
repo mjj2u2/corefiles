@@ -1,0 +1,72 @@
+import win32com.client
+
+import pandas as pd
+
+def search_outlook_folder(folder_name):
+
+    outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
+
+    
+
+    # Get the root folder (Inbox)
+
+    root_folder = outlook.GetDefaultFolder(6)  # 6 represents the Inbox folder
+
+    
+
+    # Search for the specified folder
+
+    folder = None
+
+    for subfolder in root_folder.Folders:
+
+        if subfolder.Name == folder_name:
+
+            folder = subfolder
+
+            break
+
+    
+
+    if folder is None:
+
+        raise ValueError(f"Folder '{folder_name}' not found in Outlook.")
+
+    
+
+    messages = folder.Items
+
+    
+
+    # Create a list to store message attributes
+
+    message_data = []
+
+    
+
+    # Iterate over each message and extract relevant data
+
+    for message in messages:
+
+        message_data.append({
+
+            "Subject": message.Subject,
+
+            "Sender": message.SenderName,
+
+            "ReceivedTime": message.ReceivedTime,
+
+            "Body": message.Body
+
+        })
+
+    
+
+    # Convert the list of dictionaries to a pandas DataFrame
+
+    df = pd.DataFrame(message_data)
+
+    
+
+    return df
+
